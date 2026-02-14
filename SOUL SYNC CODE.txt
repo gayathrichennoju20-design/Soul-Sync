@@ -1,0 +1,1213 @@
+/******************************************************************************
+ * SECTION 1: HTML STRUCTURE
+ ******************************************************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulSync - Where Hearts Speak Louder Than Words</title>
+        
+/******************************************************************************
+ * SECTION 2: CSS STYLING - BASE STYLES
+ ******************************************************************************/
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    overflow-x: hidden;
+}
+
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.floating-shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-100px) rotate(180deg); }
+}
+
+/******************************************************************************
+ * SECTION 3: CSS - NAVIGATION STYLES
+ ******************************************************************************/
+
+nav {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #fff, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); }
+    to { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+    transform: translateY(-2px);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ffd700;
+    transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/******************************************************************************
+ * SECTION 4: CSS - BUTTON STYLES
+ ******************************************************************************/
+
+.btn {
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+/******************************************************************************
+ * SECTION 5: CSS - CARD AND LAYOUT STYLES
+ ******************************************************************************/
+
+.demo-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.output-box {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+    border: 2px solid rgba(255, 215, 0, 0.2);
+    line-height: 1.8;
+    display: none;
+}
+
+.output-box.show {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+.suggestion-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border-left: 4px solid;
+    transition: all 0.3s;
+}
+
+.suggestion-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.suggestion-card.personal { border-color: #4CAF50; }
+.suggestion-card.work { border-color: #2196F3; }
+.suggestion-card.relationship { border-color: #E91E63; }
+.suggestion-card.health { border-color: #FF9800; }
+
+/******************************************************************************
+ * SECTION 6: CSS - LOADING ANIMATION
+ ******************************************************************************/
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    display: none;
+}
+
+.loading.show {
+    display: block;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #ffd700;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/******************************************************************************
+ * SECTION 7: CSS - RESPONSIVE DESIGN
+ ******************************************************************************/
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    .nav-links {
+        gap: 1rem;
+        font-size: 0.9rem;
+    }
+}
+</style>
+</head>
+<body>
+
+/******************************************************************************
+ * SECTION 8: HTML - NAVIGATION BAR WITH LOGO
+ ******************************************************************************/
+
+<nav>
+    <div class="logo" style="display: flex; align-items: center; gap: 0.8rem;">
+        <img src="data:image/jpeg;base64,YOUR_LOGO_BASE64_HERE" 
+             alt="SoulSync Logo" 
+             style="height: 55px; width: auto; filter: drop-shadow(0 3px 10px rgba(255,215,0,0.5));">
+        <span style="font-size: 1.8rem;">SoulSync</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#demo">Try It</a></li>
+        <li><a href="#how">How It Works</a></li>
+    </ul>
+</nav>
+
+/******************************************************************************
+ * SECTION 9: HTML - DEMO SECTION (5 TABS)
+ ******************************************************************************/
+
+<section class="demo-section" id="demo">
+    <div class="demo-container">
+        <div class="demo-tabs">
+            <div class="demo-tab active" onclick="switchTab('analyze')">🧠 Analyze Message</div>
+            <div class="demo-tab" onclick="switchTab('voice')">🎤 Voice Mood</div>
+            <div class="demo-tab" onclick="switchTab('conflict')">🕊️ Resolve Conflict</div>
+            <div class="demo-tab" onclick="switchTab('empathy')">🎮 Empathy Training</div>
+            <div class="demo-tab" onclick="switchTab('prompts')">💬 Connection Prompts</div>
+        </div>
+
+        <div id="analyze" class="demo-content active">
+            <textarea id="userMessage" placeholder="Enter your message..."></textarea>
+            <button class="btn btn-primary" onclick="analyzeMessage()">Analyze Now</button>
+            <div id="loading1" class="loading"><div class="spinner"></div><p>Analyzing...</p></div>
+            <div id="output1" class="output-box"></div>
+        </div>
+
+        <div id="voice" class="demo-content">
+            <textarea id="voiceMessage" placeholder="Type what you'd say out loud..."></textarea>
+            <button class="btn btn-primary" onclick="analyzeVoiceMood()">🎤 Analyze My Mood</button>
+            <div id="loading5" class="loading"><div class="spinner"></div><p>Analyzing mood...</p></div>
+            <div id="output5" class="output-box"></div>
+        </div>
+
+        <div id="conflict" class="demo-content">
+            <textarea id="conflictMessage" placeholder="Describe the conflict..."></textarea>
+            <button class="btn btn-primary" onclick="resolveConflict()">Get Strategies</button>
+            <div id="loading2" class="loading"><div class="spinner"></div><p>Generating strategies...</p></div>
+            <div id="output2" class="output-box"></div>
+        </div>
+
+        <div id="empathy" class="demo-content">
+            <button class="btn btn-primary" onclick="getEmpathyScenario()">Get Daily Challenge</button>
+            <div id="loading3" class="loading"><div class="spinner"></div><p>Loading scenario...</p></div>
+            <div id="empathyOutput" class="output-box"></div>
+        </div>
+
+        <div id="prompts" class="demo-content">
+            <button class="btn btn-primary" onclick="getConnectionPrompts()">Generate Prompts</button>
+            <div id="loading4" class="loading"><div class="spinner"></div><p>Generating prompts...</p></div>
+            <div id="promptsOutput" class="output-box"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+/******************************************************************************
+ * SECTION 10: JAVASCRIPT - TAB SWITCHING
+ ******************************************************************************/
+
+function switchTab(tabName) {
+    document.querySelectorAll('.demo-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.demo-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+}
+
+/******************************************************************************
+ * SECTION 11: JAVASCRIPT - CONTEXT DETECTION
+ ******************************************************************************/
+
+function detectProblemContext(message) {
+    const lowerMsg = message.toLowerCase();
+    const contexts = [];
+    
+    if (lowerMsg.match(/\b(i feel|i'm|i am|myself|alone|lonely|identity|purpose|meaning|confidence|insecure|not good enough|self|personal|life)\b/)) {
+        contexts.push('personal');
+    }
+    
+    if (lowerMsg.match(/\b(work|job|career|boss|manager|colleague|coworker|office|deadline|project|meeting|promotion|salary|quit|fired|workload|overwhelm.*work)\b/)) {
+        contexts.push('work');
+    }
+    
+    if (lowerMsg.match(/\b(partner|boyfriend|girlfriend|spouse|husband|wife|relationship|dating|marriage|break.*up|fight|argument|trust|cheat|listen)\b/)) {
+        contexts.push('relationship');
+    }
+    
+    if (lowerMsg.match(/\b(health|sleep|insomnia|anxiety|anxious|stress|depressed|depression|tired|exhausted|mental|therapy|panic|worry)\b/)) {
+        contexts.push('health');
+    }
+    
+    const uniqueContexts = [...new Set(contexts)];
+    
+    if (uniqueContexts.length === 0) {
+        uniqueContexts.push('personal');
+    }
+    
+    return uniqueContexts.slice(0, 2);
+}
+
+/******************************************************************************
+ * SECTION 12: JAVASCRIPT - EMOTION ANALYSIS
+ ******************************************************************************/
+
+function generateMockAnalysis(message) {
+    const lowerMsg = message.toLowerCase();
+    
+    let emotion = 'neutral';
+    if (lowerMsg.includes('never') || lowerMsg.includes('always') || lowerMsg.includes('hate')) {
+        emotion = 'frustrated';
+    } else if (lowerMsg.includes('sad') || lowerMsg.includes('hurt') || lowerMsg.includes('down')) {
+        emotion = 'sad';
+    } else if (lowerMsg.includes('love') || lowerMsg.includes('happy') || lowerMsg.includes('excited')) {
+        emotion = 'happy';
+    } else if (lowerMsg.includes('worried') || lowerMsg.includes('anxious') || lowerMsg.includes('nervous')) {
+        emotion = 'anxious';
+    } else if (lowerMsg.includes('angry') || lowerMsg.includes('mad') || lowerMsg.includes('furious')) {
+        emotion = 'angry';
+    } else if (lowerMsg.includes('stressed') || lowerMsg.includes('overwhelm')) {
+        emotion = 'stressed';
+    }
+    
+    let tone = 'reflective';
+    if (lowerMsg.includes('you never') || lowerMsg.includes('you always')) {
+        tone = 'accusatory';
+    } else if (lowerMsg.includes('fine') || lowerMsg.includes('whatever')) {
+        tone = 'passive-aggressive';
+    } else if (emotion === 'happy' || lowerMsg.includes('thank') || lowerMsg.includes('appreciate')) {
+        tone = 'warm';
+    } else if (lowerMsg.includes('need help') || lowerMsg.includes('struggling')) {
+        tone = 'vulnerable';
+    }
+    
+    const concerns = [];
+    if (lowerMsg.includes('never') || lowerMsg.includes('always')) concerns.push('absolute language');
+    if (lowerMsg.includes('you ') && (lowerMsg.includes('never') || lowerMsg.includes('always'))) concerns.push('blame-focused');
+    if (lowerMsg.includes('but')) concerns.push('negating statement');
+    if (concerns.length === 0) concerns.push('none detected');
+    
+    const intensity = (lowerMsg.includes('!') || lowerMsg.includes('???')) ? 'high' : 
+                     (emotion === 'frustrated' || emotion === 'angry' || emotion === 'stressed') ? 'medium' : 'low';
+    
+    let reframe = message;
+    if (lowerMsg.includes('never')) {
+        reframe = message.replace(/you never/gi, "I feel unheard when") + ". Can we talk about this?";
+    } else if (lowerMsg.includes('always')) {
+        reframe = message.replace(/you always/gi, "I've noticed that sometimes") + ". I'd like to discuss this with you.";
+    } else if (lowerMsg.includes('work') || lowerMsg.includes('job')) {
+        reframe = "I'm feeling challenged by my current workload. I want to find strategies to manage it better while maintaining my wellbeing.";
+    } else {
+        reframe = "I'm experiencing [emotion] about [situation]. I'd like to work on [specific goal] to feel better.";
+    }
+    
+    return {
+        emotion,
+        tone,
+        intensity,
+        concerns,
+        reframe,
+        relationship_impact: emotion === 'frustrated' || emotion === 'angry' ? 'negative' : 
+                            emotion === 'happy' ? 'positive' : 'neutral',
+        communication_quality: concerns.length <= 1 ? 8 : concerns.length === 2 ? 5 : 3
+    };
+}
+
+/******************************************************************************
+ * SECTION 13: JAVASCRIPT - VOICE MOOD DETECTION
+ ******************************************************************************/
+
+async function analyzeVoiceMood() {
+    const message = document.getElementById('voiceMessage').value.trim();
+    const output = document.getElementById('output5');
+    const loading = document.getElementById('loading5');
+
+    if (!message) {
+        alert('Please type what you want to say');
+        return;
+    }
+
+    loading.classList.add('show');
+    output.classList.remove('show');
+
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const analysis = generateMockAnalysis(message);
+    const voiceMood = detectVoiceMood(message);
+    const contexts = detectProblemContext(message);
+    
+    output.innerHTML = `
+        <h4 style="margin-bottom: 1.5rem;">🎤 Mood Analysis from Your Words:</h4>
+        
+        <div class="analysis-section">
+            <strong>📋 Detected Topic:</strong><br>
+            ${contexts.map(c => `<span class="emotion-badge" style="background: ${getContextColor(c)};">${getContextIcon(c)} ${c.charAt(0).toUpperCase() + c.slice(1)}</span>`).join('')}
+        </div>
+        
+        <div class="analysis-section">
+            <strong>🎭 Detected Mood:</strong>
+            <span class="emotion-badge" style="background: ${getMoodColor(voiceMood.mood)}; font-size: 1.1rem;">
+                ${voiceMood.emoji} ${voiceMood.mood}
+            </span>
+        </div>
+
+        <div class="analysis-section">
+            <strong>📊 Expression Characteristics:</strong><br>
+            <span class="emotion-badge">Energy Level: ${voiceMood.energy}</span>
+            <span class="emotion-badge">Communication Style: ${voiceMood.style}</span>
+            <span class="emotion-badge">Emotional Intensity: ${analysis.intensity}</span>
+        </div>
+
+        <div class="analysis-section">
+            <strong>💭 What Your Words Reveal:</strong>
+            <p style="margin-top: 0.8rem; line-height: 1.6;">${voiceMood.interpretation}</p>
+        </div>
+
+        <div class="analysis-section">
+            <strong>🎯 Immediate Guidance:</strong>
+            <p style="margin-top: 0.8rem; line-height: 1.6;">${voiceMood.suggestion}</p>
+        </div>
+
+        ${generateMultipleSuggestions(message, analysis)}
+    `;
+    
+    loading.classList.remove('show');
+    output.classList.add('show');
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function detectVoiceMood(text) {
+    const lowerText = text.toLowerCase();
+    
+    const hasAllCaps = text !== text.toLowerCase() && text !== text.toUpperCase();
+    const hasMultiplePunctuation = /[!?]{2,}/.test(text);
+    const hasUgh = /\b(ugh|argh|gah|oof)\b/i.test(text);
+    
+    if (lowerText.includes('stressed') || lowerText.includes('overwhelm') || lowerText.includes('pressure') || lowerText.includes('too much')) {
+        return {
+            mood: 'Overwhelmed',
+            emoji: '😰',
+            energy: hasMultiplePunctuation || hasUgh ? 'High' : 'Medium-High',
+            style: hasAllCaps ? 'Urgent/Intense' : 'Rapid/Rushed',
+            interpretation: "Your words show you're feeling overwhelmed and under significant pressure. The way you expressed this suggests you're reaching your limit.",
+            suggestion: "Take a pause right now. Breathe deeply for 30 seconds. Then write down the top 3 things stressing you - often seeing them on paper makes them feel more manageable."
+        };
+    } else if (lowerText.includes('sad') || lowerText.includes('down') || lowerText.includes('depressed') || lowerText.includes('lonely')) {
+        return {
+            mood: 'Melancholic',
+            emoji: '😔',
+            energy: 'Low',
+            style: 'Subdued/Reflective',
+            interpretation: "Your language indicates sadness and low energy. The words you chose suggest you're going through a difficult emotional time.",
+            suggestion: "It's okay to not be okay. Reach out to someone you trust - even a simple 'I'm having a hard day' text can help. Consider doing one small thing that usually comforts you."
+        };
+    } else if (lowerText.includes('angry') || lowerText.includes('frustrated') || lowerText.includes('annoyed') || lowerText.includes('pissed') || hasUgh) {
+        return {
+            mood: 'Frustrated',
+            emoji: '😤',
+            energy: hasMultiplePunctuation ? 'Very High' : 'High',
+            style: hasAllCaps ? 'Sharp/Intense' : 'Direct/Blunt',
+            interpretation: "Your words convey strong frustration" + (hasMultiplePunctuation ? " and anger" : "") + ". The way you expressed this shows the situation is really getting to you.",
+            suggestion: "Before acting on these feelings, try this: go for a 5-minute walk, or write everything you're feeling in a note you won't send. Physical release or private venting can prevent regrettable reactions."
+        };
+    } else if (lowerText.includes('happy') || lowerText.includes('excited') || lowerText.includes('great') || lowerText.includes('amazing')) {
+        return {
+            mood: 'Positive',
+            emoji: '😊',
+            energy: hasMultiplePunctuation ? 'Very High' : 'High',
+            style: 'Upbeat/Energetic',
+            interpretation: "Your words radiate positive energy! The way you expressed yourself shows genuine enthusiasm and good spirits.",
+            suggestion: "This is wonderful! Savor this feeling. Consider journaling what contributed to this mood so you can identify and recreate these positive circumstances."
+        };
+    } else if (lowerText.includes('worried') || lowerText.includes('anxious') || lowerText.includes('nervous') || lowerText.includes('scared')) {
+        return {
+            mood: 'Anxious',
+            emoji: '😰',
+            energy: 'Medium',
+            style: 'Hesitant/Uncertain',
+            interpretation: "Your language reveals anxiety about the future or a situation. The words you chose show your mind is racing with 'what-ifs'.",
+            suggestion: "Try the 5-4-3-2-1 grounding technique: Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste. This brings you back to the present moment."
+        };
+    } else if (lowerText.includes('tired') || lowerText.includes('exhausted') || lowerText.includes('drained') || lowerText.includes('burnt out')) {
+        return {
+            mood: 'Exhausted',
+            emoji: '😴',
+            energy: 'Very Low',
+            style: 'Weary/Depleted',
+            interpretation: "Your words indicate deep exhaustion - physical, mental, or both. The way you expressed this suggests you're running on empty.",
+            suggestion: "You need rest. If possible, cancel non-essential plans today. Take a nap, go to bed early, or simply sit and do nothing for 20 minutes. Rest isn't lazy - it's necessary."
+        };
+    } else {
+        return {
+            mood: 'Thoughtful',
+            emoji: '🤔',
+            energy: 'Medium',
+            style: 'Calm/Measured',
+            interpretation: "Your words are reflective and measured. The way you expressed yourself suggests you're processing your thoughts carefully.",
+            suggestion: "You seem to be in a good headspace for self-reflection. This is a great time to journal or think deeply about what you want or need."
+        };
+    }
+}
+
+function getMoodColor(mood) {
+    const colors = {
+        'Overwhelmed': 'rgba(255,152,0,0.3)',
+        'Melancholic': 'rgba(33,150,243,0.3)',
+        'Frustrated': 'rgba(244,67,54,0.3)',
+        'Positive': 'rgba(76,175,80,0.3)',
+        'Anxious': 'rgba(156,39,176,0.3)',
+        'Exhausted': 'rgba(121,85,72,0.3)',
+        'Thoughtful': 'rgba(158,158,158,0.3)'
+    };
+    return colors[mood] || colors.Thoughtful;
+}
+
+/******************************************************************************
+ * SECTION 14: JAVASCRIPT - CONFLICT RESOLUTION
+ ******************************************************************************/
+
+async function resolveConflict() {
+    const message = document.getElementById('conflictMessage').value.trim();
+    const output = document.getElementById('output2');
+    const loading = document.getElementById('loading2');
+
+    if (!message) {
+        alert('Please describe the conflict');
+        return;
+    }
+
+    loading.classList.add('show');
+    output.classList.remove('show');
+
+    await new Promise(resolve => setTimeout(resolve, 1800));
+
+    const strategies = [
+        {
+            name: "Peaceful De-escalation",
+            emoji: "🕊️",
+            response: "I can see this is really important to you, and I want to understand better. Can we take a moment to both share our perspectives without judgment? I'm committed to working through this together.",
+            outcome: "This acknowledges their feelings, shows you're listening, and invites collaboration rather than conflict. It de-escalates by creating safety.",
+            relationship_score: 9
+        },
+        {
+            name: "Assertive Boundary",
+            emoji: "🤝",
+            response: "I hear that you're upset, and I want to address this. However, I need us to communicate respectfully. Can we agree to discuss this calmly so we can actually solve the problem?",
+            outcome: "Sets a healthy boundary while staying engaged. Shows you won't accept poor treatment but are still committed to resolution.",
+            relationship_score: 7
+        },
+        {
+            name: "Take Space",
+            emoji: "💭",
+            response: "I can tell we're both pretty heated right now. I care about resolving this, but I think we need a little time to cool down first. Can we revisit this in [30 minutes/an hour] when we're both calmer?",
+            outcome: "Prevents saying things you'll regret. Taking space is healthy when emotions are too high for productive conversation.",
+            relationship_score: 6
+        }
+    ];
+
+    output.innerHTML = `
+        <h4 style="margin-bottom: 1.5rem;">🕊️ Conflict Resolution Strategies:</h4>
+        
+        ${strategies.map(strategy => `
+            <div class="strategy-card">
+                <h5 style="color: #ffd700; margin-bottom: 0.8rem;">
+                    ${strategy.emoji} ${strategy.name}
+                    <span style="float: right; background: rgba(76,175,80,0.3); padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem;">
+                        💝 ${strategy.relationship_score}/10
+                    </span>
+                </h5>
+                <p style="margin: 0.8rem 0; line-height: 1.6;"><strong>Response:</strong> "${strategy.response}"</p>
+                <p style="opacity: 0.9; line-height: 1.6;"><strong>Outcome:</strong> ${strategy.outcome}</p>
+            </div>
+        `).join('')}
+
+        <div class="analysis-section" style="margin-top: 1.5rem;">
+            <strong>⚠️ Warning Signs:</strong><br>
+            <span class="emotion-badge" style="background: rgba(255,152,0,0.3);">⚠️ Escalating language</span>
+            <span class="emotion-badge" style="background: rgba(255,152,0,0.3);">⚠️ Personal attacks</span>
+        </div>
+
+        <div class="analysis-section">
+            <strong>⏰ Recommended Cooling Off:</strong> 30-60 minutes minimum if emotions are very high
+        </div>
+    `;
+    
+    loading.classList.remove('show');
+    output.classList.add('show');
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/******************************************************************************
+ * SECTION 15: JAVASCRIPT - EMPATHY TRAINING
+ ******************************************************************************/
+
+async function getEmpathyScenario() {
+    const output = document.getElementById('empathyOutput');
+    const loading = document.getElementById('loading3');
+
+    loading.classList.add('show');
+    output.classList.remove('show');
+
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
+    const scenario = {
+        scenario: "Your roommate just got rejected from their dream graduate program after months of preparation. They've been holed up in their room all day. You knock on their door to check in, and they say 'I'm fine, just leave me alone.'",
+        context: "You know they've been working extremely hard on this application and had high hopes. They tend to bottle up emotions when stressed.",
+        question: "How do you respond?",
+        options: [
+            {
+                text: "Respect their space and leave them alone as they asked",
+                empathy_score: 4,
+                feedback: "While respecting boundaries is important, sometimes people push others away when they need support most. A middle ground would be better."
+            },
+            {
+                text: "Say: 'I know you said you want space, and I respect that. But I'm here when you're ready, and I'm bringing food in 30 minutes whether you want it or not because I care about you.'",
+                empathy_score: 9,
+                feedback: "Excellent! This balances respect for their stated need with persistent care. You're showing you see through the deflection while not forcing conversation. The specific timeline and action (food) shows genuine care."
+            },
+            {
+                text: "Push in anyway and say 'Come on, you need to talk about it. Bottling things up isn't healthy.'",
+                empathy_score: 3,
+                feedback: "While your intention is good, this dismisses their stated boundary and could make them feel pressured or invalidated. People often need time before they're ready to open up."
+            }
+        ],
+        learning_point: "True empathy means reading between the lines while respecting boundaries. When someone pushes you away during pain, they're often testing if you'll still care. Show up with gentle persistence, not pushiness."
+    };
+    
+    output.innerHTML = `
+        <h4 style="margin-bottom: 1.5rem;">🎮 Daily Empathy Challenge:</h4>
+        
+        <div class="analysis-section">
+            <strong>📖 Scenario:</strong>
+            <p style="margin-top: 0.8rem; line-height: 1.6;">${scenario.scenario}</p>
+        </div>
+
+        <div class="analysis-section">
+            <strong>🔍 Context:</strong>
+            <p style="margin-top: 0.8rem; line-height: 1.6;">${scenario.context}</p>
+        </div>
+
+        <div class="analysis-section">
+            <strong>❓ ${scenario.question}</strong>
+        </div>
+
+        ${scenario.options.map((option, index) => `
+            <div class="scenario-option" onclick="showEmpathyFeedback(${index})">
+                <strong>${String.fromCharCode(65 + index)}.</strong> ${option.text}
+                <div id="feedback-${index}" style="display: none; margin-top: 0.8rem; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <strong>Empathy Score: ${option.empathy_score}/10</strong><br>
+                    <p style="margin-top: 0.5rem; line-height: 1.6;">${option.feedback}</p>
+                </div>
+            </div>
+        `).join('')}
+
+        <div class="analysis-section" style="margin-top: 1.5rem;">
+            <strong>💡 Learning Point:</strong>
+            <p style="margin-top: 0.8rem; line-height: 1.6;">${scenario.learning_point}</p>
+        </div>
+    `;
+    
+    loading.classList.remove('show');
+    output.classList.add('show');
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showEmpathyFeedback(index) {
+    const feedback = document.getElementById(`feedback-${index}`);
+    if (feedback.style.display === 'none') {
+        document.querySelectorAll('[id^="feedback-"]').forEach(f => f.style.display = 'none');
+        feedback.style.display = 'block';
+    } else {
+        feedback.style.display = 'none';
+    }
+}
+
+/******************************************************************************
+ * SECTION 16: JAVASCRIPT - CONNECTION PROMPTS
+ ******************************************************************************/
+
+async function getConnectionPrompts() {
+    const output = document.getElementById('promptsOutput');
+    const loading = document.getElementById('loading4');
+
+    loading.classList.add('show');
+    output.classList.remove('show');
+
+    await new Promise(resolve => setTimeout(resolve, 1300));
+
+    const prompts = [
+        {
+            title: "Gratitude Share",
+            emoji: "🙏",
+            description: "Tell your partner three specific things they did this week that made your life better. Be detailed—not just 'thanks for dinner' but 'the way you made my favorite dish after my stressful day showed you really pay attention to what I need.'",
+            category: "gratitude",
+            estimated_time: "10 minutes"
+        },
+        {
+            title: "Time Machine Question",
+            emoji: "⏰",
+            description: "If you could go back and tell your younger self one thing about love and relationships, what would it be? Share your answers and discuss how those lessons shaped who you are today.",
+            category: "deep-talk",
+            estimated_time: "15 minutes"
+        },
+        {
+            title: "Dream Date Planning",
+            emoji: "✨",
+            description: "Take turns describing your ideal date with no budget limits. Then, plan a 'budget version' of those dates together. The planning is half the fun!",
+            category: "fun",
+            estimated_time: "20 minutes"
+        },
+        {
+            title: "Appreciation Audit",
+            emoji: "💝",
+            description: "Each person shares one thing they think the other doesn't get enough credit for. Often we're silently grateful but forget to say it out loud.",
+            category: "gratitude",
+            estimated_time: "5 minutes"
+        },
+        {
+            title: "Future Vision",
+            emoji: "🔮",
+            description: "Describe where you see yourselves in 5 years. Don't just talk about goals—talk about how you want to FEEL. What does your ideal Tuesday night look like?",
+            category: "deep-talk",
+            estimated_time: "15 minutes"
+        }
+    ];
+    
+    output.innerHTML = `
+        <h4 style="margin-bottom: 1.5rem;">✨ Today's Connection Prompts:</h4>
+        
+        <div class="analysis-section">
+            <strong>🎯 Today's Theme:</strong> Deepening Appreciation & Future Dreaming
+        </div>
+
+        ${prompts.map(prompt => `
+            <div class="strategy-card">
+                <h5 style="color: #ffd700; margin-bottom: 0.8rem;">
+                    ${prompt.emoji} ${prompt.title}
+                    <span style="float: right; background: rgba(255,215,0,0.2); padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem;">
+                        ⏱️ ${prompt.estimated_time}
+                    </span>
+                </h5>
+                <p style="margin: 0.8rem 0; line-height: 1.6;">${prompt.description}</p>
+                <span class="emotion-badge" style="background: rgba(76,175,80,0.2); border: 1px solid #4CAF50;">
+                    ${prompt.category}
+                </span>
+            </div>
+        `).join('')}
+    `;
+    
+    loading.classList.remove('show');
+    output.classList.add('show');
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/******************************************************************************
+ * SECTION 17: JAVASCRIPT - MULTIPLE SUGGESTIONS GENERATOR
+ ******************************************************************************/
+
+function generateMultipleSuggestions(message, analysis) {
+    const contexts = detectProblemContext(message);
+    let suggestionsHTML = '<div class="analysis-section"><strong>💡 Personalized Suggestions:</strong></div>';
+    
+    contexts.forEach(context => {
+        const suggestion = getSuggestionByContext(context, message, analysis);
+        suggestionsHTML += `
+            <div class="suggestion-card ${context}">
+                <h5 style="color: #ffd700; margin-bottom: 0.8rem;">
+                    ${suggestion.icon} ${suggestion.title}
+                </h5>
+                <p style="line-height: 1.6; margin-bottom: 0.8rem;">${suggestion.description}</p>
+                <div style="background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 8px;">
+                    <strong>Action Steps:</strong>
+                    <ul style="margin: 0.5rem 0 0 1.5rem; line-height: 1.8;">
+                        ${suggestion.actions.map(action => `<li>${action}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        `;
+    });
+    
+    return suggestionsHTML;
+}
+
+/******************************************************************************
+ * SECTION 18: JAVASCRIPT - CONTEXT-SPECIFIC SUGGESTIONS (12+ TYPES)
+ ******************************************************************************/
+
+function getSuggestionByContext(context, message, analysis) {
+    const lowerMsg = message.toLowerCase();
+    
+    switch(context) {
+        case 'personal':
+            if (lowerMsg.includes('lonely') || lowerMsg.includes('alone')) {
+                return {
+                    icon: '🌱',
+                    title: 'Combating Loneliness',
+                    description: "Loneliness is a signal, not a character flaw. Your feelings are telling you that you need more meaningful connection.",
+                    actions: [
+                        "Reach out to one person today - even a simple 'thinking of you' message",
+                        "Join a group activity (class, club, volunteer work) where repeated contact builds friendships",
+                        "Video call someone instead of texting - seeing faces reduces isolation",
+                        "Remember: quality over quantity. One genuine connection beats dozens of shallow ones"
+                    ]
+                };
+            } else if (lowerMsg.includes('purpose') || lowerMsg.includes('meaning') || lowerMsg.includes('point')) {
+                return {
+                    icon: '🌱',
+                    title: 'Finding Your Purpose',
+                    description: "Purpose isn't found in a moment of clarity - it's built through small actions that align with your values.",
+                    actions: [
+                        "Write down 3 things you value most (connection? creativity? growth? helping others?)",
+                        "Identify one small way you can act on each value this week",
+                        "Try new things - purpose often emerges from experimentation",
+                        "Talk to people living lives you admire - ask about their journey"
+                    ]
+                };
+            } else if (lowerMsg.includes('confidence') || lowerMsg.includes('insecure') || lowerMsg.includes('not good enough')) {
+                return {
+                    icon: '🌱',
+                    title: 'Building Self-Confidence',
+                    description: "Confidence comes from evidence - showing yourself repeatedly that you can handle things, even when scared.",
+                    actions: [
+                        "List 5 challenges you've already overcome - you're stronger than you think",
+                        "Do one small thing outside your comfort zone this week",
+                        "Stop comparing your behind-the-scenes to others' highlight reels",
+                        "Practice self-compassion: Would you talk to a friend the way you talk to yourself?"
+                    ]
+                };
+            } else {
+                return {
+                    icon: '🌱',
+                    title: 'Personal Growth Strategy',
+                    description: "Focus on self-awareness and emotional regulation. Your feelings are valid, and recognizing them is the first step to growth.",
+                    actions: [
+                        "Start a daily journal to track your emotions and identify patterns",
+                        "Practice self-compassion - treat yourself like you'd treat a good friend",
+                        "Set one small, achievable goal for this week to build momentum",
+                        "Consider talking to a therapist or counselor if feelings persist"
+                    ]
+                };
+            }
+        
+        case 'work':
+            if (lowerMsg.includes('boss') || lowerMsg.includes('manager')) {
+                return {
+                    icon: '💼',
+                    title: 'Managing Up Strategy',
+                    description: "Difficult bosses are common. The key is managing the relationship strategically while protecting your wellbeing.",
+                    actions: [
+                        "Document everything - keep records of instructions, feedback, and accomplishments",
+                        "Communicate in their preferred style (email? meetings? quick updates?)",
+                        "Schedule a 1-on-1 to clarify expectations and priorities",
+                        "Set boundaries: respond to after-hours messages during work hours when possible",
+                        "If it's toxic and unchangeable, start building your exit strategy"
+                    ]
+                };
+            } else if (lowerMsg.includes('deadline') || lowerMsg.includes('overwhelm') || lowerMsg.includes('too much')) {
+                return {
+                    icon: '💼',
+                    title: 'Workload Management',
+                    description: "Being overwhelmed means your current system isn't working. Time to restructure, not work harder.",
+                    actions: [
+                        "List everything on your plate. Categorize: Urgent+Important / Important Only / Neither",
+                        "Communicate capacity to your manager: 'I can do X by Friday or Y by Monday, which is priority?'",
+                        "Block focus time on your calendar - treat it like a meeting",
+                        "Say no to new requests until current load is manageable",
+                        "Take actual breaks - your brain needs downtime to function"
+                    ]
+                };
+            } else {
+                return {
+                    icon: '💼',
+                    title: 'Professional Wellness Approach',
+                    description: "Work stress is common, but it doesn't have to control your life. Balance and boundaries are key.",
+                    actions: [
+                        "Prioritize tasks using the Eisenhower Matrix (urgent vs important)",
+                        "Schedule regular breaks - even 5 minutes every hour helps",
+                        "Communicate your workload to your manager if overwhelmed",
+                        "Set clear work-life boundaries (no emails after hours)",
+                        "Build relationships with supportive colleagues"
+                    ]
+                };
+            }
+        
+        case 'relationship':
+            if (lowerMsg.includes('fight') || lowerMsg.includes('argument') || lowerMsg.includes('conflict')) {
+                return {
+                    icon: '💝',
+                    title: 'Conflict Resolution in Relationships',
+                    description: "Fighting isn't the problem - HOW you fight determines if it strengthens or damages the relationship.",
+                    actions: [
+                        "Use 'I feel [emotion] when [behavior]' not 'You always/never...'",
+                        "Take a 20-minute break if things get too heated - agree to resume when calm",
+                        "Focus on solving the problem, not winning the argument",
+                        "Listen to understand, not to prepare your counter-argument",
+                        "After resolution, discuss what you both learned for next time"
+                    ]
+                };
+            } else if (lowerMsg.includes("doesn't listen") || lowerMsg.includes("don't listen") || lowerMsg.includes('ignore')) {
+                return {
+                    icon: '💝',
+                    title: 'Feeling Unheard in Relationships',
+                    description: "Feeling unheard is one of the most painful relationship experiences. But 'not listening' often means different things to different people.",
+                    actions: [
+                        "Be specific: 'When I tell you about my day, you stay on your phone' vs 'You never listen'",
+                        "Ask for what you need: 'Can we have 15 minutes to really talk?'",
+                        "Check if you're being heard but not agreed with (different issue)",
+                        "Schedule regular check-ins - don't only talk when there's a problem",
+                        "If this persists despite efforts, couples counseling can help"
+                    ]
+                };
+            } else {
+                return {
+                    icon: '💝',
+                    title: 'Relationship Communication Guide',
+                    description: "Healthy relationships require open communication and mutual respect. Use 'I' statements to express feelings.",
+                    actions: [
+                        "Use this formula: 'I feel [emotion] when [situation] because [reason]'",
+                        "Schedule a calm time to talk, not during conflict",
+                        "Listen actively without planning your response",
+                        "Acknowledge their feelings even if you disagree",
+                        "Focus on the issue, not attacking the person"
+                    ]
+                };
+            }
+        
+        case 'health':
+            if (lowerMsg.includes('sleep') || lowerMsg.includes('tired') || lowerMsg.includes('insomnia')) {
+                return {
+                    icon: '🏥',
+                    title: 'Sleep & Energy Recovery',
+                    description: "Sleep issues compound everything else. Improving sleep is one of the highest-impact changes you can make.",
+                    actions: [
+                        "Set a consistent sleep schedule - same bedtime and wake time, even weekends",
+                        "Create a wind-down routine: dim lights, no screens 30 mins before bed",
+                        "Keep bedroom cool (65-68°F), dark, and quiet",
+                        "If you can't sleep after 20 minutes, get up and do something calm, then try again",
+                        "See a doctor if this persists - sleep disorders are treatable"
+                    ]
+                };
+            } else if (lowerMsg.includes('anxiety') || lowerMsg.includes('anxious') || lowerMsg.includes('panic')) {
+                return {
+                    icon: '🏥',
+                    title: 'Managing Anxiety',
+                    description: "Anxiety is your brain's alarm system stuck in 'on' mode. You can't think your way out - you have to work with your body.",
+                    actions: [
+                        "Practice 4-7-8 breathing: Inhale 4 counts, hold 7, exhale 8. Repeat 4 times",
+                        "Use the 5-4-3-2-1 grounding: 5 things you see, 4 touch, 3 hear, 2 smell, 1 taste",
+                        "Move your body daily - anxiety is trapped energy that needs release",
+                        "Limit caffeine and alcohol - both worsen anxiety",
+                        "If anxiety interferes with daily life, therapy (especially CBT) is highly effective"
+                    ]
+                };
+            } else {
+                return {
+                    icon: '🏥',
+                    title: 'Wellness & Self-Care Plan',
+                    description: "Your mental and physical health are interconnected. Taking care of one helps the other.",
+                    actions: [
+                        "Establish a consistent sleep schedule (7-9 hours)",
+                        "Try the 4-7-8 breathing technique for anxiety relief",
+                        "Move your body daily - even a 10-minute walk counts",
+                        "Limit caffeine and alcohol, increase water intake",
+                        "Consider professional help if symptoms interfere with daily life"
+                    ]
+                };
+            }
+        
+        default:
+            return {
+                icon: '✨',
+                title: 'General Wellbeing Tips',
+                description: "Small consistent changes lead to big improvements over time.",
+                actions: [
+                    "Practice gratitude - name 3 things you're thankful for daily",
+                    "Connect with someone you trust",
+                    "Engage in activities that bring you joy",
+                    "Be patient with yourself during difficult times"
+                ]
+            };
+    }
+}
+
+/******************************************************************************
+ * SECTION 19: JAVASCRIPT - MAIN ANALYSIS FUNCTION
+ ******************************************************************************/
+
+async function analyzeMessage() {
+    const message = document.getElementById('userMessage').value.trim();
+    const output = document.getElementById('output1');
+    const loading = document.getElementById('loading1');
+
+    if (!message) {
+        alert('Please enter a message to analyze');
+        return;
+    }
+
+    loading.classList.add('show');
+    output.classList.remove('show');
+
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const analysis = generateMockAnalysis(message);
+    const contexts = detectProblemContext(message);
+    
+    output.innerHTML = `
+        <h4 style="margin-bottom: 1.5rem;">🧠 Emotional Analysis:</h4>
+        
+        <div class="analysis-section">
+            <strong>Problem Context:</strong><br>
+            ${contexts.map(c => `<span class="emotion-badge" style="background: ${getContextColor(c)};">${getContextIcon(c)} ${c.charAt(0).toUpperCase() + c.slice(1)}</span>`).join('')}
+        </div>
+
+        <div class="analysis-section">
+            <strong>Primary Emotion:</strong>
+            <span class="emotion-badge" style="background: ${getEmotionColor(analysis.emotion)};">
+                ${analysis.emotion}
+            </span>
+        </div>
+
+        <div class="analysis-section">
+            <strong>Communication Tone:</strong>
+            <span class="emotion-badge">${analysis.tone}</span>
+            <strong style="margin-left: 1rem;">Intensity:</strong>
+            <span class="emotion-badge">${analysis.intensity}</span>
+        </div>
+
+        <div class="analysis-section">
+            <strong>⚠️ Communication Concerns:</strong><br>
+            ${analysis.concerns.map(c => `<span class="emotion-badge" style="background: rgba(255,152,0,0.2);">${c}</span>`).join('')}
+        </div>
+
+        ${generateMultipleSuggestions(message, analysis)}
+
+        <div class="analysis-section">
+            <strong>✏️ Reframed Message (if applicable):</strong>
+            <p style="margin-top: 0.8rem; padding: 1rem; background: rgba(76,175,80,0.2); border-radius: 8px; line-height: 1.6;">
+                "${analysis.reframe}"
+            </p>
+        </div>
+    `;
+    
+    loading.classList.remove('show');
+    output.classList.add('show');
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/******************************************************************************
+ * SECTION 20: JAVASCRIPT - HELPER FUNCTIONS
+ ******************************************************************************/
+
+function getContextColor(context) {
+    const colors = {
+        'personal': 'rgba(76,175,80,0.3)',
+        'work': 'rgba(33,150,243,0.3)',
+        'relationship': 'rgba(233,30,99,0.3)',
+        'health': 'rgba(255,152,0,0.3)'
+    };
+    return colors[context] || 'rgba(158,158,158,0.3)';
+}
+
+function getContextIcon(context) {
+    const icons = {
+        'personal': '🌱',
+        'work': '💼',
+        'relationship': '💝',
+        'health': '🏥'
+    };
+    return icons[context] || '✨';
+}
+
+function getEmotionColor(emotion) {
+    const colors = {
+        'frustrated': 'rgba(255,152,0,0.3)',
+        'sad': 'rgba(33,150,243,0.3)',
+        'happy': 'rgba(76,175,80,0.3)',
+        'anxious': 'rgba(156,39,176,0.3)',
+        'angry': 'rgba(244,67,54,0.3)',
+        'stressed': 'rgba(255,193,7,0.3)',
+        'neutral': 'rgba(158,158,158,0.3)'
+    };
+    return colors[emotion] || colors.neutral;
+}
+
+/******************************************************************************
+ * SECTION 21: JAVASCRIPT - INITIALIZATION
+ ******************************************************************************/
+
+function createFloatingShapes() {
+    const container = document.getElementById('bgAnimation');
+    const colors = ['rgba(255, 215, 0, 0.1)', 'rgba(255, 107, 107, 0.1)', 'rgba(102, 126, 234, 0.1)'];
+    
+    for (let i = 0; i < 15; i++) {
+        const shape = document.createElement('div');
+        shape.className = 'floating-shape';
+        shape.style.width = `${Math.random() * 100 + 50}px`;
+        shape.style.height = shape.style.width;
+        shape.style.left = `${Math.random() * 100}%`;
+        shape.style.top = `${Math.random() * 100}%`;
+        shape.style.background = colors[Math.floor(Math.random() * colors.length)];
+        shape.style.animationDelay = `${Math.random() * 5}s`;
+        shape.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        container.appendChild(shape);
+    }
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+window.addEventListener('load', () => {
+    createFloatingShapes();
+});
+
+document.getElementById('userMessage').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        analyzeMessage();
+    }
+});
+
+document.getElementById('conflictMessage').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        resolveConflict();
+    }
+});
+
+</script>
+</body>
+</html>
